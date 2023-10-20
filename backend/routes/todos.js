@@ -2,24 +2,23 @@ const express = require("express")
 
 const router = express.Router()
 
-router.get("/", (req, res) => {
-    res.json({ message: "GET ALL TODOS" })
-})
+const {
+    getAllTodos, addNewTodo, deleteTodo, markTodo, clearCompletedTasks
+} = require("../controllers/todoControllers")
 
-router.post("/", (req, res) => {
-    res.json({ message: "ADD NEW TODO" })
-})
+//GET ALL TODOS
+router.get("/", getAllTodos)
 
-router.delete("/:taskId", (req, res) => {
-    res.json({ message: "DELETE A TODO" })
-})
+//ADD NEW TODO
+router.post("/", addNewTodo)
 
-router.patch("/:taskId", (req, res) => {
-    res.json({ message: "MARK TODO AS COMPLETE" })
-})
+//DELETE TODO
+router.delete("/:taskId", deleteTodo)
 
-router.delete("/", (req, res) => {
-    res.json({ message: "CLEAR ALL COMPLETED TASKS" })
-})
+//MARK TODO
+router.patch("/:taskId", markTodo)
+
+//CLEAR ALL COMPLETED TASKS
+router.delete("/", clearCompletedTasks)
 
 module.exports = router
