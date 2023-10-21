@@ -14,6 +14,7 @@ module.exports = {
     colors: {
       'red': '#FF0000',
       'white': 'white',
+      'transparent': 'transparent',
 
       primary: {
         'bright-blue': 'hsl(220, 98%, 61%)',

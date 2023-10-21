@@ -3,7 +3,7 @@ import React from 'react'
 export const Header = () => {
     return (
         <>
-            <header className={`bg-light-mode-mobile bg-no-repeat bg-center h-[200px] px-3 py-7`}>
+            <header className={`bg-light-mode-mobile bg-no-repeat bg-center h-[200px] px-4 py-7`}>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-white tracking-[0.35em] text-2xl'>TODO</h1>
                     <svg
