@@ -3,9 +3,17 @@ module.exports = {
   content: [
     "./src/**/*.{js,jsx,ts,tsx}",
   ],
+  darkMode: 'class',
   theme: {
+
+    backgroundImage: {
+      'light-mode-mobile': "url('./images/bg-mobile-light.jpg')",
+      'dark-mode-mobile': "url('./images/bg-mobile-dark.jpg')",
+    },
+
     colors: {
       'red': '#FF0000',
+      'white': 'white',
 
       primary: {
         'bright-blue': 'hsl(220, 98%, 61%)',
