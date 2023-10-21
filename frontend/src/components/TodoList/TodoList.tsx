@@ -16,16 +16,31 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 />
             </div>
 
-            {todos?.map((todo) => (
-                <>
-                    <Todo
-                        key={todo._id}
-                        _id={todo._id}
-                        name={todo.name}
-                        isCompleted={todo.isCompleted}
-                    />
-                </>
-            ))}
+            <div>
+                {todos?.map((todo) => (
+                    <>
+                        <Todo
+                            key={todo._id}
+                            _id={todo._id}
+                            name={todo.name}
+                            isCompleted={todo.isCompleted}
+                        />
+                    </>
+                ))}
+
+                <div className='flex'>
+                    <p>{todos.length} items left</p>
+                    <button>Clear Completed</button>
+                </div>
+            </div>
+
+            <div>
+                <button>All</button>
+                <button>Active</button>
+                <button>Completed</button>
+            </div>
+
+
         </main>
     )
 }
