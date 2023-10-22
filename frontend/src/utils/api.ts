@@ -14,7 +14,19 @@ const getTodos = async (): Promise<Array<TodoProps>> => {
     }
 }
 
+const deleteTodo = async (id: string) => {
+    try {
+        const response = await axios.delete(`${BASE_URL}/api/todo/${id}`)
+        console.log(response.data)
+        return response.data
+    }
+    catch (error) {
+        throw error
+    }
+}
+
 
 export {
-    getTodos
+    getTodos,
+    deleteTodo
 }
