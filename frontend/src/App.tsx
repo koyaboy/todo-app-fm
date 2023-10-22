@@ -22,8 +22,10 @@ function App() {
 
   return (
     <>
-      <Header />
-      <TodoList todos={todos} />
+      <div className='bg-lightMode-very-light-gray h-screen'>
+        <Header />
+        <TodoList todos={todos} />
+      </div>
     </>
   );
 }

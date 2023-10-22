@@ -22,3 +22,33 @@
     font-family: 'Josefin Sans', sans-serif;
     font-size: 18px;
 }
+
+.custom-checkbox {
+    display: block;
+    position: relative;
+    padding-left: 41px;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+}
+
+.custom-checkbox input {
+    position: absolute;
+    opacity: 0;
+    cursor: pointer;
+    height: 0px;
+    width: 0px;
+}
+
+.custom-checkbox .checkmark {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 22.5px;
+    width: 22.5px;
+    border: 1px solid hsl(233 11% 84%);
+    border-radius: 50%;
+}
+
+.custom-checkbox input:checked~.checkmark {
+    background-image: linear-gradient(90deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%))
+}
