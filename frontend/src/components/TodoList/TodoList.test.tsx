@@ -6,7 +6,7 @@
 
 //TodoList should render only completed todos when completed is clicked
 
-import { render, screen } from "@testing-library/react"
+import { render, screen } from "../../utils/test-utils"
 import TodoList from "./TodoList"
 
 describe("TodoList", () => {
