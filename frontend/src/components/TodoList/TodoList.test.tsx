@@ -11,7 +11,6 @@ import { renderWithClient } from "../../utils/test-utils"
 import TodoList from "./TodoList"
 
 describe("TodoList", () => {
-
     test('renders correctly', () => {
         let todos = [
             { _id: "1", name: "test 1", isCompleted: false },

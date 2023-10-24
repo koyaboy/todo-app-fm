@@ -26,7 +26,18 @@ const deleteTodo = async (id: string): Promise<TodoProps> => {
 }
 
 
+const markTodo = async (id: string): Promise<TodoProps> => {
+    try {
+        const response = await axios.patch(`${BASE_URL}/api/todo/${id}`)
+        return response.data
+    }
+    catch (error) {
+        throw error
+    }
+}
+
 export {
     getTodos,
-    deleteTodo
+    deleteTodo,
+    markTodo
 }

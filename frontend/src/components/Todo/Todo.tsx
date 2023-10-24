@@ -7,7 +7,7 @@ import {
     useQueryClient
 } from '@tanstack/react-query'
 
-import { deleteTodo } from '../../utils/api'
+import { deleteTodo, markTodo } from '../../utils/api'
 
 
 const Todo = ({ _id, name, isCompleted }: TodoProps) => {
@@ -21,17 +21,38 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
         }
     })
 
+    const { mutateAsync: markTodoMutation } = useMutation({
+        mutationFn: markTodo,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos'] })
+        }
+    })
+
     return (
-        <div data-testid={_id}>
+        <div>
             <div className='flex justify-between items-center p-4'>
-                <label className='custom-checkbox'>
+                <label className={`custom-checkbox ${isCompleted && 'line-through'} ${isCompleted ? 'text-lightMode-light-grayish-blue' : 'text-lightMode-very-dark-grayish-blue'}`}>
                     {name}
 
                     <input
                         type="checkbox"
+                        checked={isCompleted}
+                        onClick={async () => {
+                            await markTodoMutation(_id)
+                        }}
                     />
 
-                    {/* <span className='checkmark'></span> */}
+                    <span className='checkmark flex justify-center items-center'>
+                        {isCompleted &&
+                            <svg
+                                xmlns="http://www.w3.org/2000/svg"
+                                width="11"
+                                height="9"
+                            >
+                                <path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6" />
+                            </svg>
+                        }
+
                 </label>
 
 

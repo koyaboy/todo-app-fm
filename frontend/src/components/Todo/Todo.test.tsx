@@ -1,14 +1,15 @@
+
 /*
 - Should render correctly
 
 - Should delete todo when delete icon is clicked
 */
-
 import { render, screen } from "@testing-library/react"
 import user from "@testing-library/user-event"
-import Todo from "./Todo"
+import '@testing-library/jest-dom'
 import { renderWithClient } from "../../utils/test-utils"
 import { deleteTodo } from "../../utils/api"
+import Todo from "./Todo"
 import { vi } from "vitest"
 
 vi.mock('../../utils/api', () => {
@@ -41,6 +42,7 @@ describe("Todo", () => {
         expect(deleteIcon).toBeInTheDocument()
     })
 
+    
     test("todo deletes when delete icon is clicked", async () => {
         user.setup()
 
