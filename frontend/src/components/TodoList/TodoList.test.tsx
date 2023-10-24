@@ -7,14 +7,10 @@
 //TodoList should render only completed todos when completed is clicked
 
 import { render, screen } from "@testing-library/react"
-<<<<<<< Updated upstream
-=======
 import { renderWithClient } from "../../utils/test-utils"
->>>>>>> Stashed changes
 import TodoList from "./TodoList"
 
 describe("TodoList", () => {
-
     test('renders correctly', () => {
         let todos = [
             { _id: "1", name: "test 1", isCompleted: false },

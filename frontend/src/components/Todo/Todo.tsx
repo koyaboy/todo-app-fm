@@ -52,7 +52,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
                                 <path fill="none" stroke="#FFF" stroke-width="2" d="M1 4.304L3.696 7l6-6" />
                             </svg>
                         }
-                    </span>
+
                 </label>
 
 

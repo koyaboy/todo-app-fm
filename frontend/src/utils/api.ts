@@ -2,7 +2,7 @@ import axios from "axios"
 
 import { TodoProps } from "../components/Todo/Todo.types"
 
-const BASE_URL = process.env.REACT_APP_BASE_URL
+const BASE_URL = import.meta.env.VITE_APP_BASE_URL
 
 const getTodos = async (): Promise<Array<TodoProps>> => {
     try {
@@ -14,13 +14,13 @@ const getTodos = async (): Promise<Array<TodoProps>> => {
     }
 }
 
-const deleteTodo = async (id: string) => {
+const deleteTodo = async (id: string): Promise<TodoProps> => {
     try {
         const response = await axios.delete(`${BASE_URL}/api/todo/${id}`)
-        console.log(response.data)
         return response.data
     }
     catch (error) {
+        console.log(error)
         throw error
     }
 }
