@@ -7,6 +7,10 @@
 //TodoList should render only completed todos when completed is clicked
 
 import { render, screen } from "@testing-library/react"
+<<<<<<< Updated upstream
+=======
+import { renderWithClient } from "../../utils/test-utils"
+>>>>>>> Stashed changes
 import TodoList from "./TodoList"
 
 describe("TodoList", () => {
@@ -17,7 +21,7 @@ describe("TodoList", () => {
             { _id: "2", name: "test 2", isCompleted: true },
             { _id: "3", name: "test 3", isCompleted: false }
         ]
-        render(<TodoList todos={todos} />)
+        renderWithClient(<TodoList todos={todos} />)
 
         const addTodoElement = screen.getByRole("textbox")
         expect(addTodoElement).toBeInTheDocument()
