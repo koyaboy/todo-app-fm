@@ -31,7 +31,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
                         type="checkbox"
                     />
 
-                    <span className='checkmark'></span>
+                    {/* <span className='checkmark'></span> */}
                 </label>
 
 
