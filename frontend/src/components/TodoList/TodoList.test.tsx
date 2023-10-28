@@ -11,7 +11,7 @@ import { renderWithClient } from "../../utils/test-utils"
 import { vi } from "vitest"
 import user from "@testing-library/user-event"
 import TodoList from "./TodoList"
-import { clearCompletedTasks } from "../../utils/api"
+import { clearCompletedTasks, addNewTodo } from "../../utils/api"
 
 vi.mock('../../utils/api', () => {
     return {
@@ -23,6 +23,9 @@ vi.mock('../../utils/api', () => {
         }),
         clearCompletedTasks: vi.fn().mockResolvedValue({
             acknowledged: true, deletedCount: 2
+        }),
+        addNewTodo: vi.fn().mockResolvedValue({
+            _id: "1", name: "test", isCompleted: false
         })
     };
 });
@@ -72,6 +75,28 @@ describe("TodoList", () => {
         expect(allTodos).toBeInTheDocument()
         expect(activeTodos).toBeInTheDocument()
         expect(completedTodos).toBeInTheDocument()
+    })
+
+    test("should call addNewTodo function with correct arguments", async () => {
+        user.setup()
+
+        let todos = [
+            { _id: "1", name: "test 1", isCompleted: false },
+            { _id: "2", name: "test 2", isCompleted: true },
+            { _id: "3", name: "test 3", isCompleted: false }
+        ]
+
+        renderWithClient(<TodoList todos={todos} />)
+
+        const todoName = "test"
+
+        const todoInput = screen.getByRole("textbox")
+
+        await user.type(todoInput, todoName)
+
+        await user.type(todoInput, '{enter}')
+
+        expect(addNewTodo).toHaveBeenCalledWith(todoName)
     })
 
     test("clearCompletedTasks function should return correct deletedCount", async () => {

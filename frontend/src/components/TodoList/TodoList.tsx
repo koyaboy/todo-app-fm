@@ -2,16 +2,24 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { TodoProps } from '../Todo/Todo.types'
 import Todo from '../Todo/Todo'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { clearCompletedTasks } from '../../utils/api'
+import { addNewTodo, clearCompletedTasks } from '../../utils/api'
 
 const TodoList = ({ todos }: { todos: TodoProps[] }) => {
 
     const [filter, setFilter] = useState<string>("all")
+    const [todoName, setTodoName] = useState<string>("")
 
     const queryClient = useQueryClient()
 
     const { mutateAsync: clearCompletedTasksMutation } = useMutation({
         mutationFn: clearCompletedTasks,
+        onSuccess: () => {
+            queryClient.invalidateQueries({ queryKey: ['todos'] })
+        }
+    })
+
+    const { mutateAsync: addNewTodoMutation } = useMutation({
+        mutationFn: addNewTodo,
         onSuccess: () => {
             queryClient.invalidateQueries({ queryKey: ['todos'] })
         }
@@ -29,6 +37,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
             }
         })
 
+
     return (
         <main className='relative -top-20 px-4'>
             <div className=' bg-white flex gap-4 items-center p-4 rounded-md'>
@@ -38,6 +47,14 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                     type="text"
                     placeholder='Create a new todo...'
                     className='bg-transparent'
+                    value={todoName}
+                    onChange={(e) => setTodoName(e.target.value)}
+                    onKeyDown={async (e) => {
+                        if (e.key === "Enter") {
+                            await addNewTodoMutation(todoName)
+                            setTodoName("")
+                        }
+                    }}
                 />
             </div>
 

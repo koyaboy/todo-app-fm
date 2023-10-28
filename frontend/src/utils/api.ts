@@ -14,6 +14,15 @@ const getTodos = async (): Promise<Array<TodoProps>> => {
     }
 }
 
+const addNewTodo = async (todoName: string): Promise<TodoProps> => {
+    try {
+        const response = await axios.post(`${BASE_URL}/api/todo/`, { name: todoName })
+        return response.data
+    } catch (error) {
+        throw error
+    }
+}
+
 const deleteTodo = async (id: string): Promise<TodoProps> => {
     try {
         const response = await axios.delete(`${BASE_URL}/api/todo/${id}`)
@@ -46,6 +55,7 @@ const clearCompletedTasks = async (): Promise<{ acknowledged: boolean, deletedCo
 
 export {
     getTodos,
+    addNewTodo,
     deleteTodo,
     markTodo,
     clearCompletedTasks
