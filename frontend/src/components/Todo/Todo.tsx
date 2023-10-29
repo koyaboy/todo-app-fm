@@ -31,7 +31,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
     return (
         <div>
             <div className='flex justify-between items-center p-4'>
-                <label className={`custom-checkbox ${isCompleted && 'line-through'} ${isCompleted ? 'text-lightMode-light-grayish-blue' : 'text-lightMode-very-dark-grayish-blue'}`}>
+                <label className={`custom-checkbox ${isCompleted && 'line-through'} ${isCompleted ? 'text-lightMode-light-grayish-blue dark:text-darkMode-dark-grayish-blue' : 'text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'}`}>
                     {name}
 
                     <input

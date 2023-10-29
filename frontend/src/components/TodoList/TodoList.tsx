@@ -40,13 +40,13 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
 
     return (
         <main className='relative -top-20 px-4'>
-            <div className=' bg-white flex gap-4 items-center p-4 rounded-md'>
+            <div className=' bg-white dark:bg-darkMode-very-dark-desaturated-blue flex gap-4 items-center p-4 rounded-md'>
                 <div className='w-5 h-5 rounded-full border border-lightMode-light-grayish-blue'></div>
 
                 <input
                     type="text"
                     placeholder='Create a new todo...'
-                    className='bg-transparent'
+                    className='bg-transparent text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'
                     value={todoName}
                     onChange={(e) => setTodoName(e.target.value)}
                     onKeyDown={async (e) => {
@@ -58,7 +58,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 />
             </div>
 
-            <ul className='mt-2 bg-white rounded-md shadow-lg'>
+            <ul className='mt-2 bg-white dark:bg-darkMode-very-dark-desaturated-blue rounded-md shadow-xl'>
                 {filteredTodos?.map((todo) => (
                     <li key={todo._id}>
                         <Todo
@@ -75,7 +75,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 </div>
             </ul>
 
-            <div className='bg-white flex justify-center gap-3 mt-4 py-2 shadow-lg'>
+            <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
                 <button
                     className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue'} font-bold`}
                     onClick={() => {
