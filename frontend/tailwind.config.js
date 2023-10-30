@@ -10,6 +10,8 @@ module.exports = {
     backgroundImage: {
       'light-mode-mobile': "url('./images/bg-mobile-light.jpg')",
       'dark-mode-mobile': "url('./images/bg-mobile-dark.jpg')",
+      'light-mode-desktop': "url('./images/bg-desktop-light.jpg')",
+      'dark-mode-desktop': "url('./images/bg-desktop-dark.jpg')",
     },
 
     colors: {

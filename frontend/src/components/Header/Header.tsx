@@ -29,9 +29,9 @@ export const Header = () => {
 
     return (
         <>
-            <header className={`bg-light-mode-mobile dark:bg-dark-mode-mobile bg-no-repeat bg-center h-[200px] px-4 py-7`}>
+            <header className={`bg-light-mode-mobile dark:bg-dark-mode-mobile bg-no-repeat bg-center h-[200px] px-4 py-7 bg-cover min-[450px]:bg-light-mode-desktop dark:min-[450px]:bg-dark-mode-desktop min-[450px]:px-8 sm:px-16 md:px-28 lg:px-44 xl:px-72`}>
                 <div className='flex justify-between items-center'>
-                    <h1 className='text-white tracking-[0.35em] text-2xl'>TODO</h1>
+                    <h1 className='text-white tracking-[0.35em] text-3xl'>TODO</h1>
                     {storedTheme === "light" ?
                         <svg
                             xmlns="http://www.w3.org/2000/svg"

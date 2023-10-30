@@ -39,7 +39,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
 
 
     return (
-        <main className='relative -top-20 px-4'>
+        <main className='relative -top-24 px-4 min-[450px]:px-8 sm:px-16 md:px-28 lg:px-44 xl:px-72'>
             <div className=' bg-white dark:bg-darkMode-very-dark-desaturated-blue flex gap-4 items-center p-4 rounded-md'>
                 <div className='w-5 h-5 rounded-full border border-lightMode-light-grayish-blue'></div>
 
@@ -71,6 +71,36 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
 
                 <div className='flex justify-between p-4 text-lightMode-dark-grayish-blue'>
                     <p>{filteredTodos.length} items left</p>
+
+                    <div className='hidden lg:flex lg:justify-center lg:gap-3'>
+                        <button
+                            className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                            onClick={() => {
+                                setFilter("all")
+                            }}
+                        >
+                            All
+                        </button>
+
+                        <button
+                            className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                            onClick={() => {
+                                setFilter("active")
+                            }}
+                        >
+                            Active
+                        </button>
+
+                        <button
+                            className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                            onClick={() => {
+                                setFilter("completed")
+                            }}
+                        >
+                            Completed
+                        </button>
+                    </div>
+
                     <button
                         className='hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'
                         onClick={async () => await clearCompletedTasksMutation()}
@@ -80,33 +110,35 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 </div>
             </ul>
 
-            <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
-                <button
-                    className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
-                    onClick={() => {
-                        setFilter("all")
-                    }}
-                >
-                    All
-                </button>
+            <div className='lg:hidden'>
+                <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
+                    <button
+                        className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                        onClick={() => {
+                            setFilter("all")
+                        }}
+                    >
+                        All
+                    </button>
 
-                <button
-                    className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
-                    onClick={() => {
-                        setFilter("active")
-                    }}
-                >
-                    Active
-                </button>
+                    <button
+                        className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                        onClick={() => {
+                            setFilter("active")
+                        }}
+                    >
+                        Active
+                    </button>
 
-                <button
-                    className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
-                    onClick={() => {
-                        setFilter("completed")
-                    }}
-                >
-                    Completed
-                </button>
+                    <button
+                        className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                        onClick={() => {
+                            setFilter("completed")
+                        }}
+                    >
+                        Completed
+                    </button>
+                </div>
             </div>
 
 
