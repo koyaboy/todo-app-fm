@@ -39,16 +39,26 @@
     width: 0px;
 }
 
-.custom-checkbox .checkmark {
+.wrapper {
     position: absolute;
-    top: 0;
+    top: 0.5px;
     left: 0;
-    height: 22.5px;
-    width: 22.5px;
-    border: 1px solid hsl(233 11% 84%);
+    padding: 1px;
     border-radius: 50%;
 }
 
-.custom-checkbox input:checked~.checkmark {
-    background-image: linear-gradient(90deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%))
+.wrapper:hover {
+    background-image: linear-gradient(90deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+}
+
+.custom-checkbox .checkmark {
+    height: 22.5px;
+    width: 22.5px;
+    border: 1px solid hsl(233, 11%, 84%);
+    border-radius: 50%;
+}
+
+.custom-checkbox input:checked+.wrapper .checkmark {
+    background-image: linear-gradient(90deg, hsl(192, 100%, 67%), hsl(280, 87%, 65%));
+    border: none;
 }

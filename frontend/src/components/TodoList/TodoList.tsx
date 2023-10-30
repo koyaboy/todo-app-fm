@@ -46,7 +46,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 <input
                     type="text"
                     placeholder='Create a new todo...'
-                    className='bg-transparent text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'
+                    className='bg-transparent outline-none caret-primary-bright-blue text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'
                     value={todoName}
                     onChange={(e) => setTodoName(e.target.value)}
                     onKeyDown={async (e) => {
@@ -71,13 +71,18 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
 
                 <div className='flex justify-between p-4 text-lightMode-dark-grayish-blue'>
                     <p>{filteredTodos.length} items left</p>
-                    <button onClick={async () => await clearCompletedTasksMutation()}>Clear Completed</button>
+                    <button
+                        className='hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'
+                        onClick={async () => await clearCompletedTasksMutation()}
+                    >
+                        Clear Completed
+                    </button>
                 </div>
             </ul>
 
             <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
                 <button
-                    className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue'} font-bold`}
+                    className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
                     onClick={() => {
                         setFilter("all")
                     }}
@@ -86,7 +91,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 </button>
 
                 <button
-                    className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue'} font-bold`}
+                    className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
                     onClick={() => {
                         setFilter("active")
                     }}
@@ -95,7 +100,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                 </button>
 
                 <button
-                    className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue'} font-bold`}
+                    className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
                     onClick={() => {
                         setFilter("completed")
                     }}
@@ -105,7 +110,7 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
             </div>
 
 
-        </main>
+        </main >
     )
 }
 

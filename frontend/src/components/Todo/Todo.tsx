@@ -31,7 +31,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
     return (
         <div>
             <div className='flex justify-between items-center p-4'>
-                <label className={`custom-checkbox ${isCompleted && 'line-through'} ${isCompleted ? 'text-lightMode-light-grayish-blue dark:text-darkMode-dark-grayish-blue' : 'text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'}`}>
+                <label className={`custom-checkbox ${isCompleted && 'line-through'} ${isCompleted ? 'text-lightMode-light-grayish-blue dark:text-darkMode-dark-grayish-blue' : 'text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'} cursor-pointer`}>
                     {name}
 
                     <input
@@ -42,17 +42,20 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
                         }}
                     />
 
-                    <span className='checkmark flex justify-center items-center'>
-                        {isCompleted &&
-                            <svg
-                                xmlns="http://www.w3.org/2000/svg"
-                                width="11"
-                                height="9"
-                            >
-                                <path fill="none" stroke="#FFF" strokeWidth="2" d="M1 4.304L3.696 7l6-6" />
-                            </svg>
-                        }
-                    </span>
+                    <div className="wrapper group">
+                        <span className='checkmark flex justify-center items-center group-hover:border-none bg-white dark:bg-darkMode-very-dark-desaturated-blue'>
+                            {isCompleted &&
+                                <svg
+                                    xmlns="http://www.w3.org/2000/svg"
+                                    width="11"
+                                    height="9"
+                                >
+                                    <path fill="none" stroke="#FFF" strokeWidth="2" d="M1 4.304L3.696 7l6-6" />
+                                </svg>
+                            }
+                        </span>
+                    </div>
+
 
                 </label>
 
