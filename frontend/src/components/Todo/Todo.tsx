@@ -30,7 +30,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
 
     return (
         <div>
-            <div className='flex justify-between items-center p-4'>
+            <div className='flex justify-between items-center p-4 group'>
                 <label className={`custom-checkbox ${isCompleted && 'line-through'} ${isCompleted ? 'text-lightMode-light-grayish-blue dark:text-darkMode-dark-grayish-blue' : 'text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'} cursor-pointer`}>
                     {name}
 
@@ -43,7 +43,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
                     />
 
                     <div className="wrapper group">
-                        <span className='checkmark flex justify-center items-center group-hover:border-none bg-white dark:bg-darkMode-very-dark-desaturated-blue'>
+                        <span className='checkmark flex justify-center items-center hover:border-none bg-white dark:bg-darkMode-very-dark-desaturated-blue'>
                             {isCompleted &&
                                 <svg
                                     xmlns="http://www.w3.org/2000/svg"
@@ -66,6 +66,7 @@ const Todo = ({ _id, name, isCompleted }: TodoProps) => {
                     height="18"
                     role="img"
                     aria-label='Delete Todo'
+                    className='lg:hidden lg:group-hover:block cursor-pointer'
                     onClick={async () => {
                         await deleteTodoMutation(_id)
                     }}
