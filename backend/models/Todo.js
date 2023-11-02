@@ -11,7 +11,7 @@ const todoSchema = new Schema({
     isCompleted: {
         type: Boolean,
         required: true
-    }
+    },
 }, { timeStamps: true })
 
 module.exports = mongoose.model("Todo", todoSchema)

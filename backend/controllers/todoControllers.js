@@ -2,10 +2,24 @@ const mongoose = require("mongoose")
 const Todo = require("../models/Todo")
 
 //GET ALL TODOS
-const getAllTodos = async (req, res) => {
-    const todos = await Todo.find()
+const getTodos = async (req, res) => {
 
-    res.status(200).json(todos)
+    const { filter } = req.params
+
+    if (filter == "active") {
+        const todos = await Todo.find({ isCompleted: false })
+        res.status(200).json(todos)
+    }
+    else if (filter == "completed") {
+        const todos = await Todo.find({ isCompleted: true })
+        res.status(200).json(todos)
+    }
+
+    else {
+        const todos = await Todo.find()
+        res.status(200).json(todos)
+    }
+
 }
 
 //ADD NEW TODO
@@ -26,6 +40,120 @@ const addNewTodo = async (req, res) => {
     catch (error) {
         res.status(400).json({ error: error.message })
     }
+}
+
+//REORDER TODOS
+const reorderTodos = async (req, res) => {
+    // const { sourceIndex, destinationIndex, id } = req.body
+
+    // const { filter } = req.params
+
+    // try {
+    //     if (filter == "active") {
+    //         const todos = await Todo.find({ isCompleted: false });
+
+    //         // let sourceName = todos[sourceIndex].name
+    //         // let sourceIsCompleted = todos[sourceIndex].isCompleted
+
+    //         // let destName = todos[destinationIndex].name
+    //         // let destIsCompleted = todos[destinationIndex].isCompleted
+
+    //         // await Todo.updateOne(
+    //         //     { _id: todos[sourceIndex]._id },
+    //         //     {
+    //         //         $set: {
+    //         //             name: destName,
+    //         //             isCompleted: destIsCompleted
+    //         //         }
+    //         //     }
+    //         // )
+
+    //         // await Todo.updateOne(
+    //         //     { _id: todos[destinationIndex]._id },
+    //         //     {
+    //         //         $set: {
+    //         //             name: sourceName,
+    //         //             isCompleted: sourceIsCompleted
+    //         //         }
+    //         //     }
+    //         // )
+
+    //         // const updatedTodos = await Todo.find({ isCompleted: false });
+    //         // res.status(200).json(updatedTodos)
+    //     }
+
+    //     else if (filter == "completed") {
+    //         const todos = await Todo.find({ isCompleted: true });
+
+    //         let sourceName = todos[sourceIndex].name
+    //         let sourceIsCompleted = todos[sourceIndex].isCompleted
+
+    //         let destName = todos[destinationIndex].name
+    //         let destIsCompleted = todos[destinationIndex].isCompleted
+
+    //         await Todo.updateOne(
+    //             { _id: todos[sourceIndex]._id },
+    //             {
+    //                 $set: {
+    //                     name: destName,
+    //                     isCompleted: destIsCompleted
+    //                 }
+    //             }
+    //         )
+
+    //         await Todo.updateOne(
+    //             { _id: todos[destinationIndex]._id },
+    //             {
+    //                 $set: {
+    //                     name: sourceName,
+    //                     isCompleted: sourceIsCompleted
+    //                 }
+    //             }
+    //         )
+
+    //         const updatedTodos = await Todo.find({ isCompleted: true });
+
+    //         res.status(200).json(updatedTodos)
+    //     }
+
+    //     else {
+    //         const todos = await Todo.find();
+
+    //         let sourceName = todos[sourceIndex].name
+    //         let sourceIsCompleted = todos[sourceIndex].isCompleted
+
+    //         let destName = todos[destinationIndex].name
+    //         let destIsCompleted = todos[destinationIndex].isCompleted
+
+    //         await Todo.updateOne(
+    //             { _id: todos[sourceIndex]._id },
+    //             {
+    //                 $set: {
+    //                     name: destName,
+    //                     isCompleted: destIsCompleted
+    //                 }
+    //             }
+    //         )
+
+    //         await Todo.updateOne(
+    //             { _id: todos[destinationIndex]._id },
+    //             {
+    //                 $set: {
+    //                     name: sourceName,
+    //                     isCompleted: sourceIsCompleted
+    //                 }
+    //             }
+    //         )
+
+    //         const updatedTodos = await Todo.find();
+
+    //         res.status(200).json(updatedTodos)
+    //     }
+    // }
+    // catch (error) {
+    //     res.status(500).json({ error: error.message })
+    // }
+
 }
 
 //DELETE A TODO
@@ -79,8 +207,9 @@ const clearCompletedTasks = async (req, res) => {
 }
 
 module.exports = {
-    getAllTodos,
+    getTodos,
     addNewTodo,
+    reorderTodos,
     deleteTodo,
     markTodo,
     clearCompletedTasks

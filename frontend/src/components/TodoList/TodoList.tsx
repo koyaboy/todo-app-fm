@@ -1,15 +1,28 @@
 import React, { useState, useEffect, Fragment } from 'react'
 import { TodoProps } from '../Todo/Todo.types'
+import { DragDropContext, DropResult, Droppable, Draggable } from "@hello-pangea/dnd"
 import Todo from '../Todo/Todo'
 import { useQuery, useMutation, useQueryClient } from '@tanstack/react-query'
-import { addNewTodo, clearCompletedTasks } from '../../utils/api'
+import { addNewTodo, clearCompletedTasks, getTodos } from '../../utils/api'
 
-const TodoList = ({ todos }: { todos: TodoProps[] }) => {
+
+
+const TodoList = () => {
 
     const [filter, setFilter] = useState<string>("all")
     const [todoName, setTodoName] = useState<string>("")
 
     const queryClient = useQueryClient()
+
+    const { data: todos = [], isLoading } = useQuery({
+        queryFn: () => getTodos(filter),
+        queryKey: ['todos', { filter }],
+    })
+
+    // if (isLoading) {
+    //     return <div>Loading..</div>
+    // }
+
 
     const { mutateAsync: clearCompletedTasksMutation } = useMutation({
         mutationFn: clearCompletedTasks,
@@ -25,52 +38,84 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
         }
     })
 
-    const filteredTodos =
-        todos.filter(todo => {
-            switch (filter) {
-                case 'all':
-                    return true
-                case 'completed':
-                    return todo.isCompleted
-                case 'active':
-                    return !todo.isCompleted
-            }
-        })
+    const onDragEnd = async (result: DropResult) => {
+        const { destination, source, draggableId } = result
 
+        if (!destination) {
+            return
+        }
+
+        if (
+            destination.droppableId === source.droppableId &&
+            destination.index === source.index
+        ) {
+            return;
+        }
+
+        let previousTodos = queryClient.getQueryData(['todos', { filter }]) as TodoProps[]
+
+        let reorderedTodos = previousTodos
+
+        const [removedTodo] = reorderedTodos.splice(source.index, 1)
+        reorderedTodos.splice(destination.index, 0, removedTodo)
+
+        queryClient.setQueryData(['todos', { filter }], reorderedTodos)
+    }
 
     return (
-        <main className='relative -top-24 px-4 min-[450px]:px-8 sm:px-16 md:px-28 lg:px-44 xl:px-72'>
-            <div className=' bg-white dark:bg-darkMode-very-dark-desaturated-blue flex gap-4 items-center p-4 rounded-md'>
-                <div className='w-5 h-5 rounded-full border border-lightMode-light-grayish-blue'></div>
+        <DragDropContext onDragEnd={onDragEnd}>
+            <main className='relative -top-24 px-4 min-[450px]:px-8 sm:px-16 md:px-28 lg:px-44 xl:px-72'>
+                <div className=' bg-white dark:bg-darkMode-very-dark-desaturated-blue flex gap-4 items-center p-4 rounded-md'>
+                    <div className='w-5 h-5 rounded-full border border-lightMode-light-grayish-blue'></div>
 
-                <input
-                    type="text"
-                    placeholder='Create a new todo...'
-                    className='bg-transparent outline-none caret-primary-bright-blue text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'
-                    value={todoName}
-                    onChange={(e) => setTodoName(e.target.value)}
-                    onKeyDown={async (e) => {
-                        if (e.key === "Enter") {
-                            await addNewTodoMutation(todoName)
-                            setTodoName("")
-                        }
-                    }}
-                />
-            </div>
+                    <input
+                        type="text"
+                        placeholder='Create a new todo...'
+                        className='bg-transparent outline-none caret-primary-bright-blue text-lightMode-very-dark-grayish-blue dark:text-darkMode-light-grayish-blue'
+                        value={todoName}
+                        onChange={(e) => setTodoName(e.target.value)}
+                        onKeyDown={async (e) => {
+                            if (e.key === "Enter") {
+                                await addNewTodoMutation(todoName)
+                                setTodoName("")
+                            }
+                        }}
+                    />
+                </div>
 
-            <ul className='mt-2 bg-white dark:bg-darkMode-very-dark-desaturated-blue rounded-md shadow-xl'>
-                {filteredTodos?.map((todo) => (
-                    <li key={todo._id}>
-                        <Todo
-                            _id={todo._id}
-                            name={todo.name}
-                            isCompleted={todo.isCompleted}
-                        />
-                    </li>
-                ))}
+                <Droppable droppableId='todoList'>
+                    {(provided) => (
+                        <ul
+                            className='mt-2 bg-white dark:bg-darkMode-very-dark-desaturated-blue rounded-md shadow-xl'
+                            {...provided.droppableProps}
+                            ref={provided.innerRef}
+                        >
+                            {todos && todos.map((todo, index) => (
+                                <Draggable draggableId={todo._id} key={todo._id} index={index}>
+                                    {(provided) => (
+                                        <li
+                                            key={todo._id}
+                                            {...provided.draggableProps}
+                                            {...provided.dragHandleProps}
+                                            ref={provided.innerRef}
+                                            className='bg-white dark:bg-darkMode-very-dark-desaturated-blue'
+                                        >
+                                            <Todo
+                                                _id={todo._id}
+                                                name={todo.name}
+                                                isCompleted={todo.isCompleted}
+                                            />
+                                        </li>
+                                    )}
+                                </Draggable>
+                            ))}
+                            {provided.placeholder}
+                        </ul>
+                    )}
+                </Droppable>
 
-                <div className='flex justify-between p-4 text-lightMode-dark-grayish-blue'>
-                    <p>{filteredTodos.length} items left</p>
+                <div className=' bg-white dark:bg-darkMode-very-dark-desaturated-blue rounded-b-md shadow-xl flex justify-between p-4 text-lightMode-dark-grayish-blue'>
+                    <p>{todos.length} items left</p>
 
                     <div className='hidden lg:flex lg:justify-center lg:gap-3'>
                         <button
@@ -108,41 +153,42 @@ const TodoList = ({ todos }: { todos: TodoProps[] }) => {
                         Clear Completed
                     </button>
                 </div>
-            </ul>
 
-            <div className='lg:hidden'>
-                <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
-                    <button
-                        className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
-                        onClick={() => {
-                            setFilter("all")
-                        }}
-                    >
-                        All
-                    </button>
 
-                    <button
-                        className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
-                        onClick={() => {
-                            setFilter("active")
-                        }}
-                    >
-                        Active
-                    </button>
+                <div className='lg:hidden'>
+                    <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
+                        <button
+                            className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                            onClick={() => {
+                                setFilter("all")
+                            }}
+                        >
+                            All
+                        </button>
 
-                    <button
-                        className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
-                        onClick={() => {
-                            setFilter("completed")
-                        }}
-                    >
-                        Completed
-                    </button>
+                        <button
+                            className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                            onClick={() => {
+                                setFilter("active")
+                            }}
+                        >
+                            Active
+                        </button>
+
+                        <button
+                            className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
+                            onClick={() => {
+                                setFilter("completed")
+                            }}
+                        >
+                            Completed
+                        </button>
+                    </div>
                 </div>
-            </div>
 
 
-        </main >
+            </main >
+        </DragDropContext>
     )
 }
 

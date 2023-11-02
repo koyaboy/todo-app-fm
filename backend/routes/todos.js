@@ -3,15 +3,16 @@ const express = require("express")
 const router = express.Router()
 
 const {
-    getAllTodos, addNewTodo, deleteTodo, markTodo, clearCompletedTasks
+    getTodos, addNewTodo, reorderTodos, deleteTodo, markTodo, clearCompletedTasks
 } = require("../controllers/todoControllers")
 
 //GET ALL TODOS
-router.get("/", getAllTodos)
+router.get("/:filter", getTodos)
 
 //ADD NEW TODO
 router.post("/", addNewTodo)
 
+router.post("/reorder/:filter", reorderTodos)
 //DELETE TODO
 router.delete("/:taskId", deleteTodo)
 
