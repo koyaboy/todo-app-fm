@@ -6,13 +6,13 @@
 
 // //TodoList should render only completed todos when completed is clicked
 
-// import { render, screen } from "@testing-library/react"
-// import { renderWithClient } from "../../utils/test-utils"
-// import { vi } from "vitest"
-// import user from "@testing-library/user-event"
-// import TodoList from "./TodoList"
-// import Todo from "../Todo/Todo"
-// import { clearCompletedTasks, addNewTodo } from "../../utils/api"
+import { render, screen } from "@testing-library/react"
+import { renderWithClient } from "../../utils/test-utils"
+import { vi } from "vitest"
+import user from "@testing-library/user-event"
+import TodoList from "./TodoList"
+import Todo from "../Todo/Todo"
+import { clearCompletedTasks, addNewTodo } from "../../utils/api"
 
 // vi.mock('../../utils/api', () => {
 //     return {
