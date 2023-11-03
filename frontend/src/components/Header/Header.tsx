@@ -29,7 +29,7 @@ export const Header = () => {
 
     return (
         <>
-            <header className={`bg-light-mode-mobile dark:bg-dark-mode-mobile bg-no-repeat bg-center h-[300px] px-4 py-14 bg-cover min-[450px]:bg-light-mode-desktop dark:min-[450px]:bg-dark-mode-desktop min-[450px]:px-8 sm:px-16 md:px-28 lg:px-44 xl:px-72`}>
+            <header className={`bg-light-mode-mobile dark:bg-dark-mode-mobile bg-no-repeat bg-center h-[250px] px-4 py-14 bg-cover min-[450px]:bg-light-mode-desktop dark:min-[450px]:bg-dark-mode-desktop min-[450px]:px-8 sm:px-16 md:px-28 lg:px-44 xl:px-72`}>
                 <div className='flex justify-between items-center'>
                     <h1 className='text-white tracking-[0.35em] text-3xl font-bold'>TODO</h1>
                     {storedTheme === "light" ?
