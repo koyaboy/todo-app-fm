@@ -19,7 +19,7 @@ function App() {
         <TodoList />
 
 
-        <footer className='text-lightMode-dark-grayish-blue mx-auto w-80% md:w-[50%] flex justify-center -mt-8 py-9'>
+        <footer className='text-lightMode-dark-grayish-blue mx-auto w-80% md:w-[50%] flex justify-center -mt-20 py-9'>
           Drag and drop to reorder list
         </footer>
       </div>

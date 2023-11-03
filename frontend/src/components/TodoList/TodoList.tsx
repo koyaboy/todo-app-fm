@@ -94,7 +94,6 @@ const TodoList = () => {
                                 <Draggable draggableId={todo._id} key={todo._id} index={index}>
                                     {(provided) => (
                                         <li
-                                            key={todo._id}
                                             {...provided.draggableProps}
                                             {...provided.dragHandleProps}
                                             ref={provided.innerRef}
