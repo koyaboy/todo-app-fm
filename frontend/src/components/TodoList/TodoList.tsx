@@ -90,7 +90,7 @@ const TodoList = () => {
                             {...provided.droppableProps}
                             ref={provided.innerRef}
                         >
-                            {todos && todos.map((todo, index) => (
+                            {todos.map((todo, index) => (
                                 <Draggable draggableId={todo._id} key={todo._id} index={index}>
                                     {(provided) => (
                                         <li
@@ -158,6 +158,7 @@ const TodoList = () => {
                 <div className='lg:hidden'>
                     <div className='bg-white dark:bg-darkMode-very-dark-desaturated-blue flex justify-center gap-3 mt-4 py-2 shadow-xl rounded-md'>
                         <button
+                            data-testid="mobile-all"
                             className={`${filter == "all" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
                             onClick={() => {
                                 setFilter("all")
@@ -167,6 +168,7 @@ const TodoList = () => {
                         </button>
 
                         <button
+                            data-testid="mobile-active"
                             className={`${filter == "active" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
                             onClick={() => {
                                 setFilter("active")
@@ -176,6 +178,7 @@ const TodoList = () => {
                         </button>
 
                         <button
+                            data-testid="mobile-completed"
                             className={`${filter == "completed" ? 'text-primary-bright-blue' : 'text-lightMode-dark-grayish-blue hover:text-lightMode-very-dark-grayish-blue dark:hover:text-darkMode-light-grayish-blue'} font-bold`}
                             onClick={() => {
                                 setFilter("completed")

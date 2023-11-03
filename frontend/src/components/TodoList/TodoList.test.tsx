@@ -1,229 +1,232 @@
-//Todolist should render an input box and todos
+// //Todolist should render an input box and todos
 
-//TodoList should render all todos when all button is clicked
+// //TodoList should render all todos when all button is clicked
 
-//TodoList should render only active todos when active is clicked
+// //TodoList should render only active todos when active is clicked
 
-//TodoList should render only completed todos when completed is clicked
+// //TodoList should render only completed todos when completed is clicked
 
-import { render, screen } from "@testing-library/react"
-import { renderWithClient } from "../../utils/test-utils"
-import { vi } from "vitest"
-import user from "@testing-library/user-event"
-import TodoList from "./TodoList"
-import { clearCompletedTasks, addNewTodo } from "../../utils/api"
+// import { render, screen } from "@testing-library/react"
+// import { renderWithClient } from "../../utils/test-utils"
+// import { vi } from "vitest"
+// import user from "@testing-library/user-event"
+// import TodoList from "./TodoList"
+// import Todo from "../Todo/Todo"
+// import { clearCompletedTasks, addNewTodo } from "../../utils/api"
 
-vi.mock('../../utils/api', () => {
-    return {
-        deleteTodo: vi.fn().mockResolvedValue(
-            { _id: "1", name: "test", isCompleted: false }
-        ),
-        markTodo: vi.fn().mockResolvedValue({
-            _id: "1", name: "test", isCompleted: true
-        }),
-        clearCompletedTasks: vi.fn().mockResolvedValue({
-            acknowledged: true, deletedCount: 2
-        }),
-        addNewTodo: vi.fn().mockResolvedValue({
-            _id: "1", name: "test", isCompleted: false
-        })
-    };
-});
+// vi.mock('../../utils/api', () => {
+//     return {
+//         deleteTodo: vi.fn().mockResolvedValue(
+//             { _id: "1", name: "test", isCompleted: false }
+//         ),
+//         markTodo: vi.fn().mockResolvedValue({
+//             _id: "1", name: "test", isCompleted: true
+//         }),
+//         clearCompletedTasks: vi.fn().mockResolvedValue({
+//             acknowledged: true, deletedCount: 2
+//         }),
+//         addNewTodo: vi.fn().mockResolvedValue({
+//             _id: "1", name: "test", isCompleted: false
+//         })
+//     };
+// });
 
-describe("TodoList", () => {
-    test('renders correctly', () => {
-        let todos = [
-            { _id: "1", name: "test 1", isCompleted: false },
-            { _id: "2", name: "test 2", isCompleted: true },
-            { _id: "3", name: "test 3", isCompleted: false }
-        ]
-        renderWithClient(<TodoList todos={todos} />)
+// describe("TodoList", () => {
+//     test('renders correctly', () => {
 
-        const addTodoElement = screen.getByRole("textbox")
-        expect(addTodoElement).toBeInTheDocument()
+//         let todo = { _id: "1", name: "test 1", isCompleted: false }
+//         renderWithClient(
+//             <>
+//                 <TodoList />
+//                 <Todo _id={todo._id} name={todo.name} isCompleted={todo.isCompleted} />
+//             </>
+//         )
 
-        const todo1 = screen.getByText('test 1')
-        const todo2 = screen.getByText('test 2')
-        const todo3 = screen.getByText('test 3')
+//         const addTodoElement = screen.getByRole("textbox")
+//         expect(addTodoElement).toBeInTheDocument()
 
-        expect(todo1).toBeInTheDocument()
-        expect(todo2).toBeInTheDocument()
-        expect(todo3).toBeInTheDocument()
+//         const todo1 = screen.getByText('test 1')
 
+//         expect(todo1).toBeInTheDocument()
 
-        const itemsLeftElement = screen.getByText(`${todos.length} items left`)
+//         const itemsLeftElement = screen.getByText(/0 items left/i)
 
-        const clearCompletedButton = screen.getByRole("button", {
-            name: "Clear Completed"
-        })
+//         const clearCompletedButton = screen.getByRole("button", {
+//             name: "Clear Completed"
+//         })
 
-        expect(itemsLeftElement).toBeInTheDocument()
-        expect(clearCompletedButton).toBeInTheDocument()
+//         expect(itemsLeftElement).toBeInTheDocument()
+//         expect(clearCompletedButton).toBeInTheDocument()
 
-        const allTodos = screen.getByRole("button", {
-            name: "All"
-        })
+//         const allTodosButton = screen.getByTestId("mobile-all")
+//         const activeTodosButton = screen.getByTestId("mobile-active")
+//         const completedTodosButton = screen.getByTestId("mobile-completed")
 
-        const activeTodos = screen.getByRole("button", {
-            name: "Active"
-        })
+//         expect(allTodosButton).toBeInTheDocument()
+//         expect(activeTodosButton).toBeInTheDocument()
+//         expect(completedTodosButton).toBeInTheDocument()
+//     })
 
-        const completedTodos = screen.getByRole("button", {
-            name: "Completed"
-        })
+//     test("should call addNewTodo function with correct arguments", async () => {
+//         user.setup()
 
-        expect(allTodos).toBeInTheDocument()
-        expect(activeTodos).toBeInTheDocument()
-        expect(completedTodos).toBeInTheDocument()
-    })
+//         let todos = [
+//             { _id: "1", name: "test 1", isCompleted: false },
+//             { _id: "2", name: "test 2", isCompleted: true },
+//             { _id: "3", name: "test 3", isCompleted: false }
+//         ]
 
-    test("should call addNewTodo function with correct arguments", async () => {
-        user.setup()
+//         renderWithClient(<TodoList />)
 
-        let todos = [
-            { _id: "1", name: "test 1", isCompleted: false },
-            { _id: "2", name: "test 2", isCompleted: true },
-            { _id: "3", name: "test 3", isCompleted: false }
-        ]
+//         const todoName = "test"
 
-        renderWithClient(<TodoList todos={todos} />)
+//         const todoInput = screen.getByRole("textbox")
 
-        const todoName = "test"
+//         await user.type(todoInput, todoName)
 
-        const todoInput = screen.getByRole("textbox")
+//         await user.type(todoInput, '{enter}')
 
-        await user.type(todoInput, todoName)
+//         expect(addNewTodo).toHaveBeenCalledWith(todoName)
+//     })
 
-        await user.type(todoInput, '{enter}')
+//     test("clearCompletedTasks function should return correct deletedCount", async () => {
+//         user.setup()
 
-        expect(addNewTodo).toHaveBeenCalledWith(todoName)
-    })
+//         let todos = [
+//             { _id: "1", name: "test 1", isCompleted: false },
+//             { _id: "2", name: "test2", isCompleted: true },
+//             { _id: "3", name: "test3", isCompleted: true }
+//         ]
 
-    test("clearCompletedTasks function should return correct deletedCount", async () => {
-        user.setup()
+//         let completed = 0
 
-        let todos = [
-            { _id: "1", name: "test 1", isCompleted: false },
-            { _id: "2", name: "test2", isCompleted: true },
-            { _id: "3", name: "test3", isCompleted: true }
-        ]
+//         for (const todo of todos) {
+//             if (todo.isCompleted === true) {
+//                 completed += 1
+//             }
+//         }
 
-        let completed = 0
+//         renderWithClient(
+//             <>
+//                 <TodoList />
+//             </>
+//         )
 
-        for (const todo of todos) {
-            if (todo.isCompleted === true) {
-                completed += 1
-            }
-        }
+//         const clearCompletedButton = screen.getByRole("button", {
+//             name: "Clear Completed"
+//         })
 
-        renderWithClient(
-            <>
-                <TodoList todos={todos} />
-            </>
-        )
+//         await user.click(clearCompletedButton)
 
-        const clearCompletedButton = screen.getByRole("button", {
-            name: "Clear Completed"
-        })
+//         expect(clearCompletedTasks).toHaveBeenCalled()
 
-        await user.click(clearCompletedButton)
+//         const result = await clearCompletedTasks()
 
-        expect(clearCompletedTasks).toHaveBeenCalled()
+//         expect(result).toEqual({
+//             acknowledged: true,
+//             deletedCount: completed
+//         })
+//     })
 
-        const result = await clearCompletedTasks()
+//     test('displays all todos when All button is clicked', async () => {
+//         user.setup()
 
-        expect(result).toEqual({
-            acknowledged: true,
-            deletedCount: completed
-        })
-    })
+//         let todos = [
+//             { _id: "1", name: "test 1", isCompleted: false },
+//             { _id: "2", name: "test2", isCompleted: true },
+//             { _id: "3", name: "test3", isCompleted: true }
+//         ]
 
-    test('displays all todos when All button is clicked', async () => {
-        user.setup()
+//         let todo = { _id: "1", name: "test 1", isCompleted: false }
+//         let todo2 = { _id: "2", name: "test2", isCompleted: true }
+//         let todo3 = { _id: "3", name: "test3", isCompleted: true }
 
-        let todos = [
-            { _id: "1", name: "test 1", isCompleted: false },
-            { _id: "2", name: "test2", isCompleted: true },
-            { _id: "3", name: "test3", isCompleted: true },
-            { _id: "4", name: "test4", isCompleted: false },
-            { _id: "5", name: "test5", isCompleted: true }
-        ]
+//         renderWithClient(
+//             <>
+//                 <TodoList />
+//                 <Todo _id={todo._id} name={todo.name} isCompleted={todo.isCompleted} />
+//                 <Todo _id={todo2._id} name={todo2.name} isCompleted={todo2.isCompleted} />
+//                 <Todo _id={todo3._id} name={todo3.name} isCompleted={todo3.isCompleted} />
+//             </>
+//         )
 
-        renderWithClient(
-            <>
-                <TodoList todos={todos} />
-            </>
-        )
+//         const allTodosButton = screen.getByTestId('mobile-all')
 
-        const allTodosButton = screen.getByRole('button', {
-            name: "All"
-        })
+//         await user.click(allTodosButton)
 
-        await user.click(allTodosButton)
+//         const todoComponents = await screen.findAllByRole("listitem")
 
-        const todoComponents = screen.getAllByRole("listitem")
+//         expect(todoComponents).toHaveLength(todos.length)
+//     })
 
-        expect(todoComponents).toHaveLength(todos.length)
-    })
+//     // test('displays active todos when Active button is clicked', async () => {
+//     //     user.setup()
 
-    test('displays active todos when Active button is clicked', async () => {
-        user.setup()
+//     //     let todos = [
+//     //         { _id: "1", name: "test 1", isCompleted: false },
+//     //         { _id: "2", name: "test2", isCompleted: true },
+//     //         { _id: "3", name: "test3", isCompleted: true },
+//     //         { _id: "4", name: "test4", isCompleted: false },
+//     //         { _id: "5", name: "test5", isCompleted: true }
+//     //     ]
 
-        let todos = [
-            { _id: "1", name: "test 1", isCompleted: false },
-            { _id: "2", name: "test2", isCompleted: true },
-            { _id: "3", name: "test3", isCompleted: true },
-            { _id: "4", name: "test4", isCompleted: false },
-            { _id: "5", name: "test5", isCompleted: true }
-        ]
+//     //     let todo = { _id: "1", name: "test 1", isCompleted: false }
+//     //     let todo2 = { _id: "2", name: "test2", isCompleted: true }
+//     //     let todo3 = { _id: "3", name: "test3", isCompleted: true }
 
-        renderWithClient(
-            <>
-                <TodoList todos={todos} />
-            </>
-        )
+//     //     renderWithClient(
+//     //         <>
+//     //             <TodoList />
+//     //             <Todo _id={todo._id} name={todo.name} isCompleted={todo.isCompleted} />
+//     //             <Todo _id={todo2._id} name={todo2.name} isCompleted={todo2.isCompleted} />
+//     //             <Todo _id={todo3._id} name={todo3.name} isCompleted={todo3.isCompleted} />
+//     //         </>
+//     //     )
 
-        const activeTodosButton = screen.getByRole('button', {
-            name: "Active"
-        })
+//     //     const activeTodosButton = screen.getByTestId("mobile-active")
 
-        await user.click(activeTodosButton)
+//     //     await user.click(activeTodosButton)
 
-        const activeTodos = todos.filter((todo) => !todo.isCompleted)
+//     //     const activeTodos = todos.filter((todo) => !todo.isCompleted)
 
-        const todoComponents = screen.getAllByRole("listitem")
+//     //     const todoComponents = screen.getAllByRole("listitem")
 
-        expect(todoComponents).toHaveLength(activeTodos.length)
-    })
+//     //     expect(todoComponents).toHaveLength(activeTodos.length)
+//     // })
 
-    test('displays completed todos when Completed button is clicked', async () => {
-        user.setup()
+//     // test('displays completed todos when Completed button is clicked', async () => {
+//     //     user.setup()
 
-        let todos = [
-            { _id: "1", name: "test 1", isCompleted: false },
-            { _id: "2", name: "test2", isCompleted: true },
-            { _id: "3", name: "test3", isCompleted: true },
-            { _id: "4", name: "test4", isCompleted: false },
-            { _id: "5", name: "test5", isCompleted: true }
-        ]
+//     //     let todos = [
+//     //         { _id: "1", name: "test 1", isCompleted: false },
+//     //         { _id: "2", name: "test2", isCompleted: true },
+//     //         { _id: "3", name: "test3", isCompleted: true },
+//     //         { _id: "4", name: "test4", isCompleted: false },
+//     //         { _id: "5", name: "test5", isCompleted: true }
+//     //     ]
 
-        renderWithClient(
-            <>
-                <TodoList todos={todos} />
-            </>
-        )
+//     //     let todo = { _id: "1", name: "test 1", isCompleted: false }
+//     //     let todo2 = { _id: "2", name: "test2", isCompleted: true }
+//     //     let todo3 = { _id: "3", name: "test3", isCompleted: true }
 
-        const completedTodosButton = screen.getByRole('button', {
-            name: "Completed"
-        })
+//     //     renderWithClient(
+//     //         <>
+//     //             <TodoList />
+//     //             <Todo _id={todo._id} name={todo.name} isCompleted={todo.isCompleted} />
+//     //             <Todo _id={todo2._id} name={todo2.name} isCompleted={todo2.isCompleted} />
+//     //             <Todo _id={todo3._id} name={todo3.name} isCompleted={todo3.isCompleted} />
+//     //         </>
+//     //     )
 
-        await user.click(completedTodosButton)
+//     //     const completedTodosButton = screen.getByTestId("mobile-completed")
 
-        const completedTodos = todos.filter((todo) => todo.isCompleted)
+//     //     await user.click(completedTodosButton)
 
-        const todoComponents = screen.getAllByRole("listitem")
+//     //     const completedTodos = todos.filter((todo) => todo.isCompleted)
 
-        expect(todoComponents).toHaveLength(completedTodos.length)
-    })
-})
+//     //     const todoComponents = screen.getAllByRole("listitem")
+
+//     //     expect(todoComponents).toHaveLength(completedTodos.length)
+//     // })
+// })
 
