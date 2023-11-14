@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Header } from './components/Header/Header';
 import TodoList from './components/TodoList/TodoList';
 
@@ -9,19 +9,13 @@ import TodoList from './components/TodoList/TodoList';
 // import { getTodos } from './utils/api';
 
 function App() {
-
   return (
     <>
       <div className='bg-lightMode-very-light-gray dark:bg-darkMode-very-dark-blue min-h-screen'>
-        <Header />
-
-
-        <TodoList />
-
-
-        <footer className='text-lightMode-dark-grayish-blue mx-auto w-80% md:w-[50%] flex justify-center -mt-20 py-9'>
-          Drag and drop to reorder list
-        </footer>
+        <>
+          <Header />
+          <TodoList />
+        </>
       </div>
     </>
   );
