@@ -28,10 +28,34 @@ const TodoList = () => {
 
     const { mutateAsync: addNewTodoMutation } = useMutation({
         mutationFn: addNewTodo,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos'] })
-        }
-    })
+        onMutate: async (newTodoName) => {
+
+            const newTodo = {
+                _id: "2345",
+                name: newTodoName,
+                isCompleted: false
+            }
+
+            await queryClient.cancelQueries({ queryKey: ['todos'] });
+
+            // Snapshot the previous value
+            const previousTodos = queryClient.getQueryData(['todos', { filter }]);
+
+            // Optimistically update to the new value
+            queryClient.setQueryData(['todos', { filter }], (old: TodoProps[]) => [...old, newTodo])
+
+            // Return a context object with the snapshotted value
+            return { previousTodos };
+        },
+        onError(error, newTodoName, context) {
+            if (context) {
+                queryClient.setQueryData(['todos'], context.previousTodos)
+            }
+        },
+        onSettled(error, context) {
+            queryClient.invalidateQueries({ queryKey: ['todos'] });
+        },
+    });
 
     const onDragEnd = async (result: DropResult) => {
         const { destination, source, draggableId } = result
