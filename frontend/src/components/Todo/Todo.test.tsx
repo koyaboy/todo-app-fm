@@ -32,6 +32,7 @@ describe("Todo", () => {
                 _id={todo._id}
                 name={todo.name}
                 isCompleted={todo.isCompleted}
+                filter="all"
             />
         )
 
@@ -54,6 +55,7 @@ describe("Todo", () => {
                 _id={todo._id}
                 name={todo.name}
                 isCompleted={todo.isCompleted}
+                filter="all"
             />
         )
 
@@ -78,6 +80,7 @@ describe("Todo", () => {
                 _id={todo._id}
                 name={todo.name}
                 isCompleted={todo.isCompleted}
+                filter="all"
             />
         )
 
