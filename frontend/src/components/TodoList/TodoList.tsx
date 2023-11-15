@@ -21,9 +21,26 @@ const TodoList = () => {
 
     const { mutateAsync: clearCompletedTasksMutation } = useMutation({
         mutationFn: clearCompletedTasks,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos'] })
-        }
+        onMutate: async () => {
+
+            await queryClient.cancelQueries({ queryKey: ['todos', { filter }] })
+
+            const previousTodos = queryClient.getQueryData(['todos', { filter }]);
+
+            queryClient.setQueryData(['todos', { filter }], (old: TodoProps[]) => {
+                return old.filter((todo) => todo.isCompleted == false)
+            });
+
+            return { previousTodos }
+        },
+        onError(error, newTodoName, context) {
+            if (context) {
+                queryClient.setQueryData(['todos'], context.previousTodos)
+            }
+        },
+        onSettled() {
+            queryClient.invalidateQueries({ queryKey: ['todos'] });
+        },
     })
 
     const { mutateAsync: addNewTodoMutation } = useMutation({
@@ -31,18 +48,19 @@ const TodoList = () => {
         onMutate: async (newTodoName) => {
 
             const newTodo = {
-                _id: "2345",
+                _id: "0123456789abcdef",
                 name: newTodoName,
                 isCompleted: false
             }
 
-            await queryClient.cancelQueries({ queryKey: ['todos'] });
+            await queryClient.cancelQueries({ queryKey: ['todos', { filter }] });
 
             // Snapshot the previous value
             const previousTodos = queryClient.getQueryData(['todos', { filter }]);
 
             // Optimistically update to the new value
             queryClient.setQueryData(['todos', { filter }], (old: TodoProps[]) => [...old, newTodo])
+            setTodoName("")
 
             // Return a context object with the snapshotted value
             return { previousTodos };
@@ -52,7 +70,7 @@ const TodoList = () => {
                 queryClient.setQueryData(['todos'], context.previousTodos)
             }
         },
-        onSettled(error, context) {
+        onSettled() {
             queryClient.invalidateQueries({ queryKey: ['todos'] });
         },
     });
@@ -125,6 +143,7 @@ const TodoList = () => {
                                                             _id={todo._id}
                                                             name={todo.name}
                                                             isCompleted={todo.isCompleted}
+                                                            filter={filter}
                                                         />
                                                     </li>
                                                 )}

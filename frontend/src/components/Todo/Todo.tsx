@@ -10,22 +10,62 @@ import {
 import { deleteTodo, markTodo } from '../../utils/api'
 
 
-const Todo = ({ _id, name, isCompleted }: TodoProps) => {
+const Todo = ({ _id, name, isCompleted, filter }: TodoProps) => {
 
     const queryClient = useQueryClient()
 
     const { mutateAsync: deleteTodoMutation } = useMutation({
         mutationFn: deleteTodo,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos'] })
-        }
+        onMutate: async (todoId) => {
+
+            await queryClient.cancelQueries({ queryKey: ['todos', { filter }] })
+
+            const previousTodos = queryClient.getQueryData(['todos', { filter }]);
+
+            queryClient.setQueryData(['todos', { filter }], (old: TodoProps[]) => {
+                return old.filter((todo) => todo._id !== todoId)
+            });
+
+            return { previousTodos }
+        },
+        onError(error, newTodoName, context) {
+            if (context) {
+                queryClient.setQueryData(['todos'], context.previousTodos)
+            }
+        },
+        onSettled() {
+            queryClient.invalidateQueries({ queryKey: ['todos'] });
+        },
     })
 
     const { mutateAsync: markTodoMutation } = useMutation({
         mutationFn: markTodo,
-        onSuccess: () => {
-            queryClient.invalidateQueries({ queryKey: ['todos'] })
-        }
+        onMutate: async (todoId) => {
+
+            await queryClient.cancelQueries({ queryKey: ['todos', { filter }] })
+
+            const previousTodos = queryClient.getQueryData(['todos', { filter }]);
+
+            queryClient.setQueryData(['todos', { filter }], (old: TodoProps[]) => {
+                return old.map((todo) => {
+                    if (todo._id === todoId) {
+                        // Toggle the isCompleted property
+                        return { ...todo, isCompleted: !todo.isCompleted };
+                    }
+                    return todo;
+                });
+            });
+
+            return { previousTodos }
+        },
+        onError(error, newTodoName, context) {
+            if (context) {
+                queryClient.setQueryData(['todos'], context.previousTodos)
+            }
+        },
+        onSettled() {
+            queryClient.invalidateQueries({ queryKey: ['todos'] });
+        },
     })
 
     return (
